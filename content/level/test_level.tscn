@@ -33,7 +33,7 @@ material = SubResource("StandardMaterial3D_56kip")
 metadata/_edit_lock_ = true
 
 [node name="Boss" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.4934, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.4934, 0.543399)
 layers = 3
 use_collision = true
 collision_layer = 7
