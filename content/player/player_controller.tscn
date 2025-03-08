@@ -51,7 +51,7 @@ mesh = SubResource("SphereMesh_gnv5b")
 
 [node name="ThirdPersonCamera" parent="." instance=ExtResource("1_ijn8q")]
 distance_from_pivot = 4.5
-pivot_offset = Vector2(1.5, 0.25)
+pivot_offset = Vector2(1.8, -0.5)
 tilt_upper_limit_deg = 35.0
 tilt_lower_limit_deg = -50.0
 tilt_sensitiveness = 2.5
@@ -65,16 +65,16 @@ mouse_y_sensitiveness = 2.0
 transform = Transform3D(0.999983, 0, 0, 0, 0.939694, 0.342, 0, -0.342009, 0.939668, 0, 0, 0)
 
 [node name="OffsetPivot" parent="ThirdPersonCamera/RotationPivot" index="0"]
-transform = Transform3D(0.994737, 1.4345e-07, 2.91958e-07, -7.83597e-07, 1.00008, 5.90682e-05, -5.18091e-06, -6.55353e-05, 1.00005, 1.5, 0.25, -7.45058e-09)
+transform = Transform3D(0.994737, 1.4345e-07, 2.91958e-07, -7.83597e-07, 1.00008, 5.90682e-05, -5.18091e-06, -6.55353e-05, 1.00005, 1.8, -0.5, 1.49012e-08)
 
 [node name="CameraSpringArm" parent="ThirdPersonCamera/RotationPivot/OffsetPivot" index="0"]
 spring_length = 4.5
 
 [node name="CameraMarker" parent="ThirdPersonCamera/RotationPivot/OffsetPivot/CameraSpringArm" index="0"]
-transform = Transform3D(1.00015, -2.36112e-06, -7.01102e-06, 1.4524e-06, 1.00032, 0.000265867, 3.93839e-06, 6.67572e-06, 1.00134, -1.43051e-06, -0.000216484, 4.49991)
+transform = Transform3D(1.00015, -2.36112e-06, -7.01102e-06, 1.4524e-06, 1.00032, 0.000265867, 3.94008e-06, 6.67572e-06, 1.00134, -1.3113e-06, -0.000216335, 4.49991)
 
 [node name="Camera" parent="ThirdPersonCamera" index="2"]
-transform = Transform3D(1, 9.64192e-09, -2.6491e-08, 0, 0.939693, 0.34202, 2.81911e-08, -0.34202, 0.939693, 1.49997, 1.77401, 4.14312)
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 1.79997, 1.06924, 4.39962)
 current = true
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
