@@ -8,6 +8,15 @@ extends CharacterBody3D
 @onready var camera_spring : Camera3D = $ThirdPersonCamera/Camera
 @onready var camera : ThirdPersonCamera = $ThirdPersonCamera
 
+enum PlayerState {
+	FREEZE,
+	MOVE,
+	DEAD
+}
+var playerState : PlayerState = PlayerState.MOVE
+
+
+
 var parent_rotations : Node3D
 
 #region OnReady_Functions
@@ -21,9 +30,45 @@ func _reposition_player() -> void:
 #endregion
 
 #region Physics_Functions
+func get_movement_speed() -> int:
+	return (SPEED * 2.5) if Input.is_action_pressed("move_sprint") else SPEED
+
 func _physics_process(delta: float) -> void:
-	_ray_lookat()
-	_move_process(delta)
+	
+	match_attackstate()
+	
+	match playerState:
+		PlayerState.MOVE:
+			_ray_lookat()
+			combat_inputs()
+			_move_process(delta)
+		PlayerState.FREEZE:
+			pass
+
+var attack_state : Array = ["IDLE", "PROJECTILE", "BEAM", "ULTIMATE"]
+var reloading : bool = false
+func match_attackstate() -> void:
+	match attack_state:
+		[1]:
+			print("PROJECTILE")
+		[2]:
+			print("BEAM")
+		[3]:
+			print("ULTIMATE")
+		_:
+			pass
+
+func combat_inputs() -> void:
+	if not reloading:
+		if Input.is_action_pressed("primary_attack"):
+			attack_state = [1]
+		elif Input.is_action_pressed("secondary_attack"):
+			attack_state = [2]
+		elif Input.is_action_just_pressed("ultimate"):
+			attack_state = [3]
+		else:
+			attack_state = [0]
+
 
 func _ray_lookat() -> void:
 	$RayCast3D.rotation = camera._camera.rotation
@@ -33,25 +78,28 @@ func _ray_lookat() -> void:
 	else:
 		%point.global_transform.origin = $RayCast3D.global_transform * (Vector3.FORWARD * 100)
 
+func _gravity_process(delta) -> void:
+	if Input.is_action_pressed("move_elevate"):
+		velocity.y += JUMP_VELOCITY * delta
+	elif Input.is_action_pressed("move_lower"):
+		velocity.y -= JUMP_VELOCITY * delta
+	else:
+		velocity.y = move_toward(velocity.y, 0, JUMP_VELOCITY)
+
 func _move_process(delta) -> void:
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
+	_gravity_process(delta)
+	
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	direction = direction.rotated(Vector3.UP, camera.rotation.y)
 	
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * get_movement_speed()
+		velocity.z = direction.z * get_movement_speed()
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, get_movement_speed())
+		velocity.z = move_toward(velocity.z, 0, get_movement_speed())
 
 	move_and_slide()
 

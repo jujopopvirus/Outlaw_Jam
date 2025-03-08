@@ -46,3 +46,5 @@ material = SubResource("StandardMaterial3D_7xk6h")
 
 [node name="PlayerController" parent="Boss/Rotations" instance=ExtResource("3_3fntj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+SPEED = 10.0
+JUMP_VELOCITY = 10.0
