@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://drwocl3x3hatm"]
+
+[ext_resource type="Texture2D" uid="uid://do75pxphcveul" path="res://addons/kenney_prototype_textures/light/texture_07.png" id="1_7x8mq"]
+[ext_resource type="Texture2D" uid="uid://bxwk2asikjqmg" path="res://addons/kenney_prototype_textures/red/texture_09.png" id="2_3fntj"]
+[ext_resource type="PackedScene" uid="uid://37mnmlm5k0mu" path="res://content/player/player_controller.tscn" id="3_3fntj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56kip"]
+albedo_color = Color(0.989456, 0.771552, 0.431488, 1)
+albedo_texture = ExtResource("1_7x8mq")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xk6h"]
+albedo_texture = ExtResource("2_3fntj")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv2_scale = Vector3(0.1, 0.1, 0.1)
+uv2_world_triplanar = true
+
+[node name="Test_Level" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="."]
+layers = 3
+use_collision = true
+collision_layer = 7
+collision_mask = 7
+size = Vector3(500, 1, 500)
+material = SubResource("StandardMaterial3D_56kip")
+metadata/_edit_lock_ = true
+
+[node name="Boss" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.4934, 0)
+layers = 3
+use_collision = true
+collision_layer = 7
+collision_mask = 7
+radius = 10.0
+height = 25.0
+material = SubResource("StandardMaterial3D_7xk6h")
+
+[node name="Rotations" type="Node3D" parent="Boss"]
+
+[node name="PlayerController" parent="Boss/Rotations" instance=ExtResource("3_3fntj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)

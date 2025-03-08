@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://37mnmlm5k0mu"]
+
+[ext_resource type="Script" uid="uid://b5t060fvvcysn" path="res://content/player/player_controller.gd" id="1_gnv5b"]
+[ext_resource type="PackedScene" uid="uid://wmf2eu0uuhrg" path="res://addons/third-person-camera/third_person_camera/ThirdPersonCamera.tscn" id="1_ijn8q"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2l0p0"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ijn8q"]
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gnv5b"]
+shading_mode = 0
+albedo_color = Color(0.908635, 0, 0.333376, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gnv5b"]
+material = SubResource("StandardMaterial3D_gnv5b")
+
+[node name="PlayerController" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_gnv5b")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0273138, 0)
+shape = SubResource("BoxShape3D_2l0p0")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ijn8q")
+
+[node name="Gun" type="CSGCylinder3D" parent="Mesh"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.616039, -0.0284574, -0.563241)
+radius = 0.317871
+height = 0.702881
+
+[node name="Gun2" type="CSGCylinder3D" parent="Mesh/Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.310364, 0)
+radius = 0.390137
+height = 0.364624
+
+[node name="smol" type="CSGCylinder3D" parent="Mesh/Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.382471, -1.11759e-08)
+radius = 0.125977
+height = 0.442749
+
+[node name="point" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_gnv5b")
+
+[node name="ThirdPersonCamera" parent="." instance=ExtResource("1_ijn8q")]
+distance_from_pivot = 4.0
+tilt_upper_limit_deg = 35.0
+tilt_lower_limit_deg = -10.0
+tilt_sensitiveness = 5.0
+horizontal_rotation_sensitiveness = 5.0
+current = true
+follow_target = 2
+mouse_y_sensitiveness = 2.0
+
+[node name="RotationPivot" parent="ThirdPersonCamera" index="0"]
+transform = Transform3D(0.999983, 0, 0, 0, 0.939694, 0.342, 0, -0.342009, 0.939668, 0, 0, 0)
+
+[node name="OffsetPivot" parent="ThirdPersonCamera/RotationPivot" index="0"]
+transform = Transform3D(0.995476, 1.4345e-07, 2.91958e-07, -7.83597e-07, 1.00008, 5.90682e-05, -5.18091e-06, -6.55353e-05, 1.00005, 0, 0, 0)
+
+[node name="CameraSpringArm" parent="ThirdPersonCamera/RotationPivot/OffsetPivot" index="0"]
+spring_length = 4.0
+
+[node name="CameraMarker" parent="ThirdPersonCamera/RotationPivot/OffsetPivot/CameraSpringArm" index="0"]
+transform = Transform3D(1.00006, -2.36133e-06, -7.01275e-06, 1.45265e-06, 1.00037, 0.000265867, 3.92259e-06, 5.24521e-06, 1.00134, -1.17309e-06, -0.000192285, 3.99992)
+
+[node name="Camera" parent="ThirdPersonCamera" index="2"]
+transform = Transform3D(1, -1.56001e-15, 8.84728e-15, 0, 0.984808, 0.173648, -8.98376e-15, -0.173648, 0.984808, 3.37679e-14, 1.36808, 3.75877)
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 1.13976e-15, 0, 1, 0, -1.13976e-15, 0, 1, 4.4068e-15, 1.32803, 3.86643)
+target_position = Vector3(0, 0, -100)
+
+[editable path="ThirdPersonCamera"]
